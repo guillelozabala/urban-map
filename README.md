@@ -1,1 +1,1 @@
-# Final proyect for Urban Economics, CEMFI, Fall 2023
+# Final project for Urban Economics, CEMFI, Fall 2023
