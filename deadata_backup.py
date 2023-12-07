@@ -105,7 +105,6 @@ for i in range(2006,2015):
             if comparison.treatment == 1:
                 remaining[remaining['STATEFP'] == k] = remaining[remaining['STATEFP'] == k].assign(treatment = 1)
 
-
         df_plot = pd.concat([df_plot,remaining])
 
         fig, ax = plt.subplots(1, figsize=(18, 14))
@@ -117,15 +116,17 @@ for i in range(2006,2015):
 
         ax.set_title(f'The Opioid Crisis:\n Hydrocodone and Oxycodone pills per capita and\n Prescription Drug Monitoring Programs in {str(month).zfill(2)}/{year}', **hfont, fontdict={'fontsize': '40', 'fontweight' : '1'})
 
-        cbax1 = fig.add_axes([0.87, 0.21, 0.03, 0.31]) 
+        cbax1 = fig.add_axes([0.85, 0.21, 0.03, 0.31]) 
         sm1 = plt.cm.ScalarMappable(cmap=colormap_reg,norm=plt.Normalize(vmin=vmin, vmax=vmax))
         sm1._A = []
-        fig.colorbar(sm1, cax=cbax1)
+        fig.colorbar(sm1, cax=cbax1, ticks= [0, 5,10,15,20,+25])
+        cbax1.set_yticklabels(['0','5','10','15','20','+25'])
 
         cbax2 = fig.add_axes([0.92, 0.21, 0.03, 0.31]) 
         sm2 = plt.cm.ScalarMappable(cmap=colormap_pdmp,norm=plt.Normalize(vmin=vmin, vmax=vmax))
         sm2._A = []
-        fig.colorbar(sm2, cax=cbax2)
+        fig.colorbar(sm2, cax=cbax2, ticks= [0, 5,10,15,20,+25])
+        cbax2.set_yticklabels(['0','5','10','15','20','+25'])
 
 
         df_ante = df_plot[(~df_plot['BUYER_STATE'].isin(['AK','HI'])) & (df_plot['treatment'] == 0)]
@@ -161,8 +162,6 @@ for i in range(2006,2015):
         hipolygon = Polygon([(-160,0),(-160,90),(-120,90),(-120,0)])
         hawaii_post.clip(hipolygon).plot(variable,linewidth=0.8,ax=ax3,vmin=vmin,vmax=vmax, edgecolor='0.8',aspect=1,missing_kwds= dict(color = "lightgrey"),cmap = colormap_pdmp)
 
-
-        text = fig.text(0.50, 0.02,f'A Prescription Drug Monitoring Program is an electronic database that tracks controlled substance prescriptions in a state. They can be used to\n send "proactive" reports to authorized users to protect patients at the higher risk and identify inappropiate prescribing trends.\n States that passed a modern PDMP by {str(month).zfill(2)}/{year} are colored in a blue shade.', horizontalalignment='center',wrap=True,**hfont, fontdict={'fontsize': '15', 'fontweight' : '1'}) 
-
+        text = fig.text(0.50, 0.02,f'A Prescription Drug Monitoring Program is an electronic database that tracks controlled substance prescriptions in a state. They can be used to send "proactive" reports to authorized users to protect patients at the higher risk and identify inappropiate prescribing trends.\n States that passed a modern PDMP by {str(month).zfill(2)}/{year} are colored in a blue shade.', horizontalalignment='center',wrap=True,**hfont, fontdict={'fontsize': '18', 'fontweight' : '1'}) 
         fig.savefig(f'C:/Users/guill/Documents/Scripts/urban/plots_pdmp_opi/{year}{str(month).zfill(2)}.png',dpi=400, bbox_inches="tight")
         plt.close()
